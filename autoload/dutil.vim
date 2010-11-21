@@ -45,9 +45,13 @@ command!
 \
 \   echohl WarningMsg
 \   | if <bang>0
-\   |   echom printf('[%s] at [%s]', v:exception, v:throwpoint)
+\   |   try
+\   |     throw ':ShowStackTrace!'
+\   |   catch
+\   |     ShowStackTrace
+\   |   endtry
 \   | else
-\   |   echom printf('[%s]', v:throwpoint)
+\   |   echom printf('[%s] at [%s]', v:exception, v:throwpoint)
 \   | endif
 \   | echohl None
 
