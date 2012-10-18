@@ -30,21 +30,24 @@ endfunction
 " Evaluate arguments at same scope.
 
 " :Dump {{{1
+
 command!
 \   -bang -nargs=+ -complete=expression
 \   Dump
-\
-\   echohl Debug
-\   | redraw
-\   | echomsg printf("  %s = %s", <q-args>, string(<args>))
-\   | if <bang>0
-\   |   try
-\   |     throw ''
-\   |   catch
-\   |     ShowStackTrace
-\   |   endtry
-\   | endif
-\   | echohl None
+\   call s:cmd_dump(<args>, <q-args>, <bang>0)
+
+function! s:cmd_dump(expr, q_args, bang)
+    redraw
+    if exists('*PP')
+        let str = PP(a:expr)
+    else
+        let str = string(a:expr)
+    endif
+    call s:echomsg('Debug', printf("  %s = %s", a:q_args, str))
+    if a:bang
+        ShowStackTrace!
+    endif
+endfunction
 
 
 " :ShowStackTrace {{{1
