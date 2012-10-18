@@ -74,7 +74,7 @@ command!
 \   -nargs=+
 \   Assert
 \
-\   if !eval(<q-args>)
+\   if !<args>
 \   |   throw dutil#assertion_failure(<q-args>)
 \   | endif
 
