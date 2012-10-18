@@ -12,6 +12,15 @@ function! dutil#load()
     " dummy
 endfunction
 
+function! s:echomsg(hl, msg)
+    execute 'echohl' a:hl
+    try
+        echomsg a:msg
+    finally
+        echohl None
+    endtry
+endfunction
+
 
 
 " Debug macros
@@ -42,19 +51,20 @@ command!
 command!
 \   -bar -bang
 \   ShowStackTrace
-\
-\   echohl WarningMsg
-\   | if <bang>0
-\   |   try
-\   |     throw ':ShowStackTrace!'
-\   |   catch
-\   |     ShowStackTrace
-\   |   endtry
-\   | else
-\   |   echom printf('[%s] at [%s]', v:exception, v:throwpoint)
-\   | endif
-\   | echohl None
+\   call s:cmd_show_stack_trace()
 
+function! s:cmd_show_stack_trace()
+    if <bang>0
+        try
+            throw ':ShowStackTrace!'
+        catch
+            ShowStackTrace
+        endtry
+    else
+        call s:echomsg('Debug',
+        \   printf('[%s] at [%s]', v:exception, v:throwpoint))
+    endif
+endfunction
 
 " :Assert {{{1
 command!
