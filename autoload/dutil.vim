@@ -87,19 +87,13 @@ endfunction
 command!
 \   -nargs=+
 \   Decho
-\
-\   echohl Debug
-\   | echomsg <args>
-\   | echohl None
+\   call s:echomsg('Debug', <args>)
 
 " :Eecho {{{1
 command!
 \   -nargs=+
 \   Eecho
-\
-\   echohl ErrorMsg
-\   | echomsg <args>
-\   | echohl None
+\   call s:echomsg('ErrorMsg', <args>)
 
 
 
